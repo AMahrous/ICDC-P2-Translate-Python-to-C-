@@ -95,9 +95,56 @@ vector< vector<float> > normalize(vector< vector <float> > grid) {
 */
 vector < vector <float> > blur(vector < vector < float> > grid, float blurring) {
 
-	vector < vector <float> > newGrid;
+	// Initialize the grid to be able to modify its elements using newGrid[row][column] syntax later in the code.
+	vector < vector <float> > newGrid{
+		{1.0,1.0,1.0},
+		{1.0,1.0,1.0},
+		{1.0,1.0,1.0}
+	};
 	
-	// your code here
+	
+	float prob_at_center = 1.0 - blurring;
+	float prob_at_corner = blurring / 12.0;
+	float prob_at_adj_cells = blurring / 6.0;
+	
+	vector < vector <float> > filter {
+		{prob_at_corner,prob_at_adj_cells,prob_at_corner},
+		{prob_at_adj_cells,prob_at_center,prob_at_adj_cells},
+		{prob_at_corner,prob_at_adj_cells,prob_at_corner}
+	};		
+
+	for (int row = 0; row < grid.size() ; row++)
+	{
+		for (int column = 0; column < grid[0].size() ; column++)
+		{
+			for(int delta_x = -1; delta_x < 2 ; delta_x++)
+			{
+				for(int delta_y = -1; delta_y < 2 ; delta_y++)
+				{
+					int new_row = row+delta_y;
+					int new_column = column+delta_x;
+					// Checks and modifies index values when out of range.
+					if (new_row == -1)
+					{
+						new_row = 2;
+					}
+					if(new_column == -1)
+					{
+						new_column = 2;
+					}
+					if (new_row == 3)
+					{
+						new_row = 0;
+					}
+					if(new_column == 3)
+					{
+						new_column = 0;
+					}
+					newGrid[new_row][new_column] = filter[delta_x+1][delta_y+1] * grid[row][column];
+				}
+			}
+		}
+	}
 
 	return normalize(newGrid);
 }
