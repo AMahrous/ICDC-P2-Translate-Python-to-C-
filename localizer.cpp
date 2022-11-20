@@ -42,7 +42,16 @@ using namespace std;
 vector< vector <float> > initialize_beliefs(vector< vector <char> > grid) {
 	vector< vector <float> > newGrid;
 
-	// your code here
+	float initial_probability = 1.0 / (grid.size()*grid[0].size());
+	for (int row = 0; row < grid.size(); row++)
+    {
+      	vector<float> new_row;
+    	for (int column = 0; column < grid[0].size(); column++)
+        {
+        	new_row.push_back(initial_probability);
+        }
+      	newGrid.push_back(new_row);
+    }
 	
 	return newGrid;
 }
