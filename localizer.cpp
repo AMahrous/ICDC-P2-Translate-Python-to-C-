@@ -181,9 +181,30 @@ vector< vector <float> > sense(char color,
 	float p_hit,
 	float p_miss) 
 {
-	vector< vector <float> > newGrid;
+	
+	cout << grid.size() << grid[0].size() << beliefs.size() << beliefs[0].size()<< endl;
+	// Initialize the grid to be able to modify its elements using newGrid[row][column] syntax later in the code.
+	vector< vector <float> > newGrid{
+		{1.0,1.0},
+		{1.0,1.0},
+		{1.0,1.0},
+		{1.0,1.0}
+	};
 
-	// your code here
+	for (int row = 0; row < beliefs.size() ; row++)
+	{
+		for (int column = 0; column < beliefs[0].size() ; column++)
+		{
+			if (grid[row][column] == color)
+			{
+				newGrid[row][column] = beliefs[row][column] * p_hit;
+			}
+			else if (grid[row][column] != color)
+			{
+				newGrid[row][column] = beliefs[row][column] * p_miss;
+			}
+		}
+	}
 
 	return normalize(newGrid);
 }
