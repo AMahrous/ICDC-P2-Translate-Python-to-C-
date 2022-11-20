@@ -98,9 +98,41 @@ vector< vector <float> > move(int dy, int dx,
   float blurring) 
 {
 
-  vector < vector <float> > newGrid;
+	// Initialize the grid to be able to modify its elements using newGrid[row][column] syntax later in the code.
+	vector < vector <float> > newGrid{
+		{1.0,1.0,1.0},
+		{1.0,1.0,1.0},
+		{1.0,1.0,1.0}
+	};
 
-  // your code here
+	for (int row = 0; row < beliefs.size() ; row++)
+	{
+		for (int column = 0; column < beliefs[0].size() ; column++)
+		{
+			int new_row = row+dy;
+			int new_column = column+dx;
+			// Checks and modifies index values when out of range.
+			if (new_row == -1)
+			{
+				new_row = 2;
+			}
+			if (new_column == -1)
+			{
+				new_column = 2;
+			}
+			while (new_row > 2)
+			{
+				new_row -= 3;
+			}
+			while (new_column > 2)
+			{
+				new_column -= 3;
+			}
+			newGrid[new_row][new_column] = beliefs[row][column];
+		}
+	}
+	
+
 
   return blur(newGrid, blurring);
 }
